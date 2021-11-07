@@ -1,0 +1,8 @@
+{
+  "name": "deck",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mixtape-bot/deck.js.git",
+  "author": "Seren_Modz 21 <seren@kings-world.net>",
+  "license": "MIT"
+}
