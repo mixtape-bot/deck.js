@@ -60,7 +60,7 @@ export default class Eval extends Command {
         embeds: [
           new Embed()
             .addField("Input", code.trunc(1000, true).toCodeBlock("js"))
-            .addField("Input", share.trunc(1000, true).toCodeBlock("js"))
+            .addField("Output", share.trunc(1000, true).toCodeBlock("js"))
             .addField("\u200b", [
               `**Type:** ${codeType.toCodeBlock("ts")}`,
               `**Time:** ${hr[0] > 0 ? `${hr[0]}s` : `${hr[1] / 1000000}ms`}`,
