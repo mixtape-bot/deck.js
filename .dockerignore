@@ -1,0 +1,15 @@
+.vscode/
+.idea/
+.github/
+.git/
+dist/
+node_modules/
+yarn-debug.log*
+yarn-error.log*
+*.log
+.env*
+
+README.md
+LICENSE
+Dockerfile
+.dockerignore
