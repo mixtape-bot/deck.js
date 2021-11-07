@@ -18,7 +18,7 @@ export class Deck extends AkairoClient {
 
   readonly commands = new CommandHandler(this, {
     directory: join(__dirname, "..", "core", "commands"),
-    prefix: process.env.PREFIX,
+    prefix: ["deck ", "d!"],
     blockBots: true,
     blockClient: true,
     allowMention: true,
