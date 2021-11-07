@@ -1,8 +1,30 @@
 {
   "name": "deck",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/core/index.js",
   "repository": "git@github.com:mixtape-bot/deck.js.git",
   "author": "Seren_Modz 21 <seren@kings-world.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf ./dist && tsc",
+    "start": "yarn build && node .",
+    "format": "prettier --write src/ && clear"
+  },
+  "_moduleAliases": {
+    "@lib": "./dist/lib"
+  },
+  "dependencies": {
+    "@dimensional-fun/logger": "^1.0.1",
+    "@kingsworld/akairo": "^8.1.2",
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0",
+    "human-ms": "^0.0.2",
+    "module-alias": "^2.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "prettier": "^2.4.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.4.4"
+  }
 }
