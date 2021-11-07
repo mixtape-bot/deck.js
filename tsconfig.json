@@ -1,0 +1,39 @@
+{
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "skipLibCheck": true,
+
+    "sourceMap": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "importHelpers": true,
+
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noStrictGenericChecks": true,
+    "importsNotUsedAsValues": "error",
+    "pretty": true,
+
+    "paths": {
+      "@lib": ["lib/index.ts"]
+    }
+  }
+}
