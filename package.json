@@ -8,7 +8,8 @@
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "start": "yarn build && node .",
-    "format": "prettier --write src/ && clear"
+    "format": "prettier --write src/ && clear",
+    "db:generate": "prisma generate"
   },
   "_moduleAliases": {
     "@lib": "./dist/lib"

@@ -7,13 +7,14 @@ import { Logger } from "@dimensional-fun/logger";
 import type { Message } from "discord.js";
 import { join } from "path";
 import { database, Embed, resolverTypes } from "@lib";
+import type { Sticky } from "@prisma/client";
 
 import "./extensions/user";
 import "./extensions/message";
 
 export class Deck extends AkairoClient {
   readonly logger = new Logger("Deck");
-  sticky: Record<string, { messageId: string; count?: number }> = {};
+  sticky: Record<string, Sticky> = {};
 
   readonly events = new ListenerHandler(this, {
     directory: join(__dirname, "..", "core", "listeners"),

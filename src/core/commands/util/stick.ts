@@ -33,15 +33,13 @@ export default class Unstick extends Command {
 
     const msg = await message.ctx._respond(true, data);
 
-    await prisma.sticky.create({
+    this.client.sticky[msg.channelId] = await prisma.sticky.create({
       data: {
         messageId: msg.id,
         channelId: msg.channelId,
         data: <any>data,
       },
     });
-
-    this.client.sticky[msg.channelId] = { messageId: msg.id };
 
     return message.deletable ? message.delete() : message.react("✅");
   }

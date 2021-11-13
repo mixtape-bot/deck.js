@@ -1,7 +1,9 @@
 FROM node:16-alpine AS deps
 WORKDIR /deck
 COPY package.json yarn.lock ./
+COPY prisma prisma
 RUN yarn install --frozen-lockfile
+RUN yarn db:generate
 
 FROM node:16-alpine AS builder
 WORKDIR /deck

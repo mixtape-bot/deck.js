@@ -11,10 +11,7 @@ export default class Ready extends Listener {
 
     const sticky = await prisma.sticky.findMany();
     this.client.sticky = sticky.reduce(
-      (prev, { channelId, messageId }) => ({
-        ...prev,
-        [channelId]: { messageId, count: 0 },
-      }),
+      (prev, curr) => ({ ...prev, [curr.channelId]: curr }),
       this.client.sticky
     );
 
