@@ -1,0 +1,19 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Sticky {
+  messageId String @id @map("message_id")
+  channelId String @map("channel_id")
+  data      Json   @default("{}")
+
+  @@map("sticky_messages")
+}

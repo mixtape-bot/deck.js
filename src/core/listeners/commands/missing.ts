@@ -1,4 +1,4 @@
-import { array, Command, Embed, Listener, listener, titleCase } from "@lib";
+import { array, Command, Embed, Listener, listener, permify } from "@lib";
 import type { Message } from "discord.js";
 
 @listener("missing", {
@@ -14,23 +14,16 @@ export default class Missing extends Listener {
   ) {
     const choice = user === "client" ? "I'm" : "your";
     const list = array<string>(missing)
-      .map((x: string) => `**${this.stringify(x)}**`)
+      .map((x: string) => permify(x))
       .join(", ");
 
     return message.util?.reply({
       embeds: [
         new Embed().setError([
-          `Sorry, ${choice} missing ${list.length.toLocaleString()} permission${
-            list.length > 1 ? "s" : ""
-          } in this channel!`,
+          `Sorry, ${choice} missing the following permissions in this channel:\n`,
           list,
         ]),
       ],
     });
-  }
-
-  stringify(permission: string) {
-    if (permission === "USE_VAD") return "Use Voice Activity";
-    return titleCase(permission.split("_"));
   }
 }

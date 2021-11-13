@@ -1,3 +1,5 @@
+import type { PrismaClient } from "@prisma/client";
+
 export * from "./client";
 export * from "./utils";
 export * from "./extensions";
@@ -22,6 +24,8 @@ String.prototype.trunc = function (
 };
 
 declare global {
+  const prisma: PrismaClient;
+
   interface String {
     toCodeBlock(lang: string): string;
     trunc(num: number, useWordBoundary: boolean): string;
@@ -29,8 +33,8 @@ declare global {
 
   namespace NodeJS {
     interface ProcessEnv {
+      DATABASE_URL: string;
       TOKEN: string;
-      PREFIX: string;
       OWNERS: string;
       DEBUG: string;
     }

@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { Color } from "./util";
+import { Color, resolveString } from "./util";
 
 export type StringResolvable = string | string[];
 
@@ -10,11 +10,11 @@ export class Embed extends MessageEmbed {
   }
 
   setDescription(description: StringResolvable): this {
-    return super.setDescription(Embed.resolveString(description));
+    return super.setDescription(resolveString(description));
   }
 
   addField(name: string, value: StringResolvable, inline?: boolean): this {
-    return super.addField(name, Embed.resolveString(value), inline);
+    return super.addField(name, resolveString(value), inline);
   }
 
   setPrompt(text: StringResolvable): this {
@@ -25,11 +25,5 @@ export class Embed extends MessageEmbed {
 
   setError(text: StringResolvable): this {
     return this.setColor(Color.ERROR).setDescription(text);
-  }
-
-  static resolveString(data: StringResolvable): string {
-    if (typeof data === "string") return data;
-    if (Array.isArray(data)) return data.join("\n");
-    return String(data);
   }
 }

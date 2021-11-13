@@ -6,10 +6,14 @@ import {
 import { Logger } from "@dimensional-fun/logger";
 import type { Message } from "discord.js";
 import { join } from "path";
-import { Embed } from "@lib";
+import { database, Embed, resolverTypes } from "@lib";
+
+import "./extensions/user";
+import "./extensions/message";
 
 export class Deck extends AkairoClient {
   readonly logger = new Logger("Deck");
+  sticky: Record<string, { messageId: string; count?: number }> = {};
 
   readonly events = new ListenerHandler(this, {
     directory: join(__dirname, "..", "core", "listeners"),
@@ -65,6 +69,8 @@ export class Deck extends AkairoClient {
   }
 
   async start() {
+    await database.init();
+    this.commands.resolver.addTypes(resolverTypes);
     this.commands.useListenerHandler(this.events);
     this.events.setEmitters({
       client: this,

@@ -4,10 +4,19 @@ import { Listener, listener } from "@lib";
   type: "once",
 })
 export default class Ready extends Listener {
-  exec() {
+  async exec() {
     const tag = this.client.user!.tag;
     const commands = this.client.commands.modules.size;
     const events = this.client.events.modules.size;
+
+    const sticky = await prisma.sticky.findMany();
+    this.client.sticky = sticky.reduce(
+      (prev, { channelId, messageId }) => ({
+        ...prev,
+        [channelId]: { messageId, count: 0 },
+      }),
+      this.client.sticky
+    );
 
     this.logger.info(
       `${tag} is now online with ${commands} commands and ${events} events`

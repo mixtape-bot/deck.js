@@ -1,5 +1,5 @@
-import type { CommandOptions, ListenerOptions } from "@kingsworld/akairo";
-import { removeDupes, Command, Listener } from "@lib";
+import type { ListenerOptions } from "@kingsworld/akairo";
+import { removeDupes, Command, Listener, CommandOptions } from "@lib";
 
 type Constructor<T> = new (...args: any[]) => T;
 

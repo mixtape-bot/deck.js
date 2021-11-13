@@ -1,4 +1,4 @@
-import { Command, command, Embed, isPromise } from "@lib";
+import { Command, command, isPromise } from "@lib";
 import type { Message } from "discord.js";
 import { inspect } from "util";
 
@@ -7,6 +7,7 @@ import { inspect } from "util";
   ownerOnly: true,
   clientPermissions: ["EMBED_LINKS"],
   description: "Evaluate some code",
+  usage: "<code> [--depth 0] [--silent] [--async]",
   args: [
     {
       id: "code",
@@ -53,30 +54,26 @@ export default class Eval extends Command {
         return message.react("✅").catch(() => null);
       }
 
-      const share = result.replace(process.env.TOKEN, "[protected]");
+      const share = result
+        .replace(process.env.TOKEN, "[protected]")
+        .replace(process.env.DATABASE_URL, "[protected]");
       const lines = share.length.toLocaleString();
 
-      return message.util?.reply({
-        embeds: [
-          new Embed()
-            .addField("Input", code.trunc(1000, true).toCodeBlock("js"))
-            .addField("Output", share.trunc(1000, true).toCodeBlock("js"))
-            .addField("\u200b", [
-              `**Type:** ${codeType.toCodeBlock("ts")}`,
-              `**Time:** ${hr[0] > 0 ? `${hr[0]}s` : `${hr[1] / 1000000}ms`}`,
-              `**Lines:** ${lines}`,
-            ]),
-        ],
-      });
+      return message.ctx.create((embed) =>
+        embed
+          .addField("Input", code.trunc(1000, true).toCodeBlock("js"))
+          .addField("Output", share.trunc(1000, true).toCodeBlock("js"))
+          .addField("\u200b", [
+            `**Type:** ${codeType.toCodeBlock("ts")}`,
+            `**Time:** ${hr[0] > 0 ? `${hr[0]}s` : `${hr[1] / 1000000}ms`}`,
+            `**Lines:** ${lines}`,
+          ])
+      );
     } catch (e: any) {
-      return message.util?.reply({
-        embeds: [
-          new Embed().setError([
-            "**Evaluation Error**:",
-            e.toString().toCodeBlock("js"),
-          ]),
-        ],
-      });
+      return message.ctx.error([
+        "**Evaluation Error**:",
+        e.toString().toCodeBlock("js"),
+      ]);
     }
   }
 
