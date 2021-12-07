@@ -1,4 +1,4 @@
-import { Command, Embed, Listener, listener } from "@lib";
+import { Command, Listener, listener } from "@lib";
 import type { Message } from "discord.js";
 import { parseMS } from "human-ms";
 
@@ -9,12 +9,8 @@ export default class Cooldown extends Listener {
   exec(message: Message, _: Command, remaining: number) {
     const time = parseMS(remaining, { joinWith: " " });
 
-    return message.util?.reply({
-      embeds: [
-        new Embed().setError(
-          `To use this command again, please wait **${time}**!`
-        ),
-      ],
-    });
+    return message.ctx.error(
+      `To use this command again, please wait **${time}**!`
+    );
   }
 }

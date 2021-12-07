@@ -1,4 +1,4 @@
-import { Command, Embed, Listener, listener } from "@lib";
+import { Command, Listener, listener } from "@lib";
 import type { Message } from "discord.js";
 
 @listener("blocked", {
@@ -13,12 +13,10 @@ export default class Blocked extends Listener {
 
     const reasons: Record<string, string> = {
       guild: "Sorry, this command can only be used in a guild!",
-      owner: "Sorry, this command can only be used by my developers!",
+      owner: "Sorry, this command can only be used by my owners!",
       dm: "Sorry, this command can only be used in a DM!",
     };
 
-    return message.util?.reply({
-      embeds: [new Embed().setError(reasons[reason])],
-    });
+    return message.ctx.error(reasons[reason]);
   }
 }

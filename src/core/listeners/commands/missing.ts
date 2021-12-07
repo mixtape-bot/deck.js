@@ -1,4 +1,4 @@
-import { array, Command, Embed, Listener, listener, permify } from "@lib";
+import { array, Command, Listener, listener, permify } from "@lib";
 import type { Message } from "discord.js";
 
 @listener("missing", {
@@ -17,13 +17,9 @@ export default class Missing extends Listener {
       .map((x: string) => permify(x))
       .join(", ");
 
-    return message.util?.reply({
-      embeds: [
-        new Embed().setError([
-          `Sorry, ${choice} missing the following permissions in this channel:\n`,
-          list,
-        ]),
-      ],
-    });
+    return message.ctx.error([
+      `Sorry, ${choice} missing the following permissions in this channel:\n`,
+      list,
+    ]);
   }
 }

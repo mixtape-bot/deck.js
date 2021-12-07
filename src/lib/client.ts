@@ -6,7 +6,7 @@ import {
 import { Logger } from "@dimensional-fun/logger";
 import type { Message } from "discord.js";
 import { join } from "path";
-import { database, Embed, resolverTypes } from "@lib";
+import { database, resolverTypes } from "@lib";
 import type { Sticky } from "@prisma/client";
 
 import "./extensions/user";
@@ -39,22 +39,20 @@ export class Deck extends AkairoClient {
       prompt: {
         time: 6e4,
         retries: 3,
-        modifyStart: (_: Message, str: string) => ({
-          embeds: [new Embed().setPrompt(str)],
+        modifyStart: ({ ctx }: Message, str: string) => ({
+          embeds: [ctx.embed.setPrompt(str)],
         }),
-        modifyRetry: (_: Message, str: string) => ({
-          embeds: [new Embed().setPrompt(str)],
+        modifyRetry: ({ ctx }: Message, str: string) => ({
+          embeds: [ctx.embed.setPrompt(str)],
         }),
-        cancel: (_: Message) => ({
-          embeds: [
-            new Embed().setDescription("The command has been cancelled"),
-          ],
+        cancel: ({ ctx }: Message) => ({
+          embeds: [ctx.embed.setDescription("The command has been cancelled")],
         }),
-        ended: (_: Message) => ({
-          embeds: [new Embed().setError("You've had too many attempts")],
+        ended: ({ ctx }: Message) => ({
+          embeds: [ctx.embed.setError("You've had too many attempts")],
         }),
-        timeout: (_: Message) => ({
-          embeds: [new Embed().setError("You failed to respond in time")],
+        timeout: ({ ctx }: Message) => ({
+          embeds: [ctx.embed.setError("You failed to respond in time")],
         }),
       },
     },
