@@ -1,6 +1,7 @@
 import { messageUrlRegex } from "@lib";
 import type { Message, TextBasedChannels } from "discord.js";
 
+// custom command arg types
 export const resolverTypes = {
   ["messageLinkOrId"]: async (message: Message, phrase?: string) => {
     if (!phrase) return null;

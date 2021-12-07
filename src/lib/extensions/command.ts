@@ -22,14 +22,15 @@ export interface CommandOptions extends BaseOptions {
 }
 
 export class Command extends BaseCommand {
-  client!: Deck;
   readonly logger = new Logger(this.id);
+  client!: Deck;
   usage: string;
 
   constructor(id: string, options: CommandOptions = {}) {
     super(id, options);
     this.usage = options.usage ?? "";
 
+    // default client permissions
     if (typeof options.clientPermissions !== "function") {
       this.clientPermissions = removeDupes<PermissionResolvable>([
         "SEND_MESSAGES",
@@ -38,6 +39,7 @@ export class Command extends BaseCommand {
       ]);
     }
 
+    // default user permissions
     if (typeof options.userPermissions !== "function") {
       this.userPermissions = removeDupes<PermissionResolvable>([
         "SEND_MESSAGES",

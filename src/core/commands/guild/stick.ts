@@ -31,7 +31,7 @@ export default class Unstick extends Command {
       files: [...fetched.attachments.values()],
     };
 
-    const msg = await message.ctx._respond(true, data);
+    const msg = await message.ctx.respond(true, data);
 
     this.client.sticky[msg.channelId] = await prisma.sticky.create({
       data: {

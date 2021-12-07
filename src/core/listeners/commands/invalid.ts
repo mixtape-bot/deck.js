@@ -5,14 +5,14 @@ import type { Message } from "discord.js";
   emitter: "commands",
   event: "messageInvalid",
 })
-export default class MessageCreate extends Listener {
+export default class MessageInvalid extends Listener {
   async exec(message: Message) {
     if (message.author.id === this.client.user!.id) return;
     const { messageId, data } = this.client.sticky[message.channelId] ?? {};
 
     if (messageId) {
       await message.channel.messages.delete(messageId).catch(() => null);
-      const msg = await message.ctx._respond(true, <any>data);
+      const msg = await message.ctx.respond(true, <any>data);
 
       this.client.sticky[msg.channelId] = await prisma.sticky.update({
         where: { messageId },
