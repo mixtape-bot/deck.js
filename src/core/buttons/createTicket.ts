@@ -35,7 +35,7 @@ export default class CreateTicket extends Button {
       data: { channelId: channel.id },
     });
     await channel.send({
-      content: `Welcome to your ticket, ${interaction.user}! <@&920449665156128888> will be with you shortly.`,
+      content: `Welcome to your ticket, ${interaction.user}! <@&${process.env.SUPPORT_ROLE}> will be with you shortly.`,
       components: [this.createActionRow()],
     });
     return interaction.editReply(

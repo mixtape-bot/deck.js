@@ -40,6 +40,7 @@ declare global {
       DEBUG: string;
       OPEN_CATEGORY: string;
       CLOSE_CATEGORY: string;
+      SUPPORT_ROLE: string;
     }
   }
 }
