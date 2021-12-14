@@ -28,9 +28,12 @@ export default class DeleteTicket extends Button {
         "Sorry, I was unable to find a record in the database!"
       );
 
-    // reply and 5 seconds later, delete the channel
+    // reply to the user and wait 5 seconds
     await interaction.editReply("The ticket will be deleted in 5 seconds.");
     await wait(5000);
-    return interaction.channel!.delete();
+
+    // delete the channel then delete the record from the database
+    await interaction.channel!.delete();
+    return prisma.tickets.delete({ where: { id } });
   }
 }
