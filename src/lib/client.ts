@@ -6,7 +6,7 @@ import {
 import { Logger } from "@dimensional-fun/logger";
 import type { Message } from "discord.js";
 import { join } from "path";
-import { database, resolverTypes } from "@lib";
+import { ButtonHandler, database, resolverTypes } from "@lib";
 import type { Sticky } from "@prisma/client";
 
 import "./extensions/user";
@@ -19,6 +19,10 @@ export class Deck extends AkairoClient {
   readonly events = new ListenerHandler(this, {
     directory: join(__dirname, "..", "core", "listeners"),
     automateCategories: true,
+  });
+
+  readonly buttons = new ButtonHandler(this, {
+    directory: join(__dirname, "..", "core", "buttons"),
   });
 
   readonly commands = new CommandHandler(this, {
@@ -80,6 +84,7 @@ export class Deck extends AkairoClient {
 
     this.commands.loadAll();
     this.events.loadAll();
+    this.buttons.loadAll();
     return this.login(process.env.TOKEN);
   }
 }

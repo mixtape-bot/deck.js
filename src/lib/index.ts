@@ -1,6 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 
 export * from "./client";
+export * from "./classes";
 export * from "./utils";
 export * from "./extensions";
 
@@ -37,6 +38,8 @@ declare global {
       TOKEN: string;
       OWNERS: string;
       DEBUG: string;
+      OPEN_CATEGORY: string;
+      CLOSE_CATEGORY: string;
     }
   }
 }

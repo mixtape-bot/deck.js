@@ -17,3 +17,13 @@ model Sticky {
 
   @@map("sticky_messages")
 }
+
+model Tickets {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  channelId String   @default("")
+  closed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("tickets")
+}

@@ -52,6 +52,18 @@ export function permify(permission: string) {
   return titleCase(permission.split("_"));
 }
 
+export function getTicketId(name: string) {
+  const strId = name.match(/(\d+)/)?.[1];
+  if (!strId) return null;
+
+  const num = +strId;
+  return isNaN(num) ? null : num;
+}
+
+export function padTicketId(id: number) {
+  return id.toString().padStart(4, "0");
+}
+
 export enum Color {
   PRIMARY = 0xb963a5,
   ERROR = 0xf54254,
