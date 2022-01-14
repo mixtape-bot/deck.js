@@ -1,5 +1,5 @@
 import { messageUrlRegex } from "@lib";
-import type { Message, TextBasedChannels } from "discord.js";
+import type { Message, TextBasedChannel } from "discord.js";
 
 // custom command arg types
 export const resolverTypes = {
@@ -13,7 +13,7 @@ export const resolverTypes = {
       const channel = guild?.channels.cache.get(channelId);
       if (!channel) return null;
 
-      return (<TextBasedChannels>channel).messages
+      return (<TextBasedChannel>channel).messages
         .fetch(messageId)
         .catch(() => null);
     }

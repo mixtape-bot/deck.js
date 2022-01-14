@@ -21,7 +21,7 @@ export default class CreateTicket extends Button {
     });
     const channel = await interaction.guild!.channels.create(
       `ticket-${padTicketId(ticket.id)}`,
-      { parent: process.env.OPEN_CATEGORY }
+      { type: "GUILD_TEXT", parent: process.env.OPEN_CATEGORY }
     );
     await channel.permissionOverwrites.create(interaction.user, {
       SEND_MESSAGES: true,
@@ -34,6 +34,7 @@ export default class CreateTicket extends Button {
       where: { id: ticket.id },
       data: { channelId: channel.id },
     });
+
     await channel.send({
       content: `Welcome to your ticket, ${interaction.user}! <@&${process.env.SUPPORT_ROLE}> will be with you shortly.`,
       components: [this.createActionRow()],
