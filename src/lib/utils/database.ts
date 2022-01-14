@@ -1,37 +1,50 @@
 import { PrismaClient } from "@prisma/client";
 import { Logger } from "@dimensional-fun/logger";
+import Redis from "ioredis";
 
-class Database {
-  readonly logger = new Logger("database");
+const initPrisma = async () => {
+  const logger = new Logger("database");
+  logger.info("Attempting a connection to the database...");
 
-  async init(): Promise<void> {
-    this.logger.info("Attempting to connect...");
+  try {
+    const prisma = new PrismaClient({
+      log: [
+        { emit: "event", level: "info" },
+        { emit: "event", level: "error" },
+        { emit: "event", level: "warn" },
+        { emit: "event", level: "query" },
+      ],
+    });
 
-    try {
-      const prisma = new PrismaClient({
-        log: [
-          { emit: "event", level: "info" },
-          { emit: "event", level: "error" },
-          { emit: "event", level: "warn" },
-          { emit: "event", level: "query" },
-        ],
-      });
+    (global as any).prisma = prisma;
+    prisma.$on("info", ({ message }) => logger.info(message));
+    prisma.$on("error", ({ message }) => logger.error(message));
+    prisma.$on("warn", ({ message }) => logger.warn(message));
+    prisma.$on("query", ({ query, duration }) => {
+      if (process.env.DEBUG !== "true") return;
+      logger.debug(`Query +${duration}ms ${query}`);
+    });
 
-      (global as any).prisma = prisma;
-      prisma.$on("info", ({ message }) => this.logger.info(message));
-      prisma.$on("error", ({ message }) => this.logger.error(message));
-      prisma.$on("warn", ({ message }) => this.logger.warn(message));
-      prisma.$on("query", ({ query, duration }) => {
-        if (process.env.DEBUG !== "true") return;
-        this.logger.debug(`Query +${duration}ms ${query}`);
-      });
-
-      await prisma.$connect();
-    } catch (error: any) {
-      this.logger.error(error);
-      process.exit(1);
-    }
+    await prisma.$connect();
+  } catch (error: any) {
+    logger.error(error);
   }
-}
+};
 
-export const database = new Database();
+const initRedis = () => {
+  const logger = new Logger("redis");
+  logger.info("Attempting a connection to redis...");
+
+  const redis = new Redis(process.env.REDIS_URL);
+
+  (global as any).redis = redis;
+  redis.on("ready", () =>
+    logger.info("A Redis connection has been established")
+  );
+  redis.on("error", (error) => logger.error(error));
+};
+
+export const connect = async () => {
+  await initPrisma();
+  initRedis();
+};

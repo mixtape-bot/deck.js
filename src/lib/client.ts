@@ -6,7 +6,7 @@ import {
 import { Logger } from "@dimensional-fun/logger";
 import type { Message } from "discord.js";
 import { join } from "path";
-import { ButtonHandler, database, resolverTypes } from "@lib";
+import { ButtonHandler, connect, resolverTypes } from "@lib";
 import type { Sticky } from "@prisma/client";
 
 import "./extensions/user";
@@ -72,7 +72,7 @@ export class Deck extends AkairoClient {
   }
 
   async start() {
-    await database.init();
+    await connect();
     this.commands.resolver.addTypes(resolverTypes);
     this.commands.useListenerHandler(this.events);
     this.events.setEmitters({

@@ -1,4 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
+import type { Redis } from "ioredis";
 
 export * from "./client";
 export * from "./classes";
@@ -26,6 +27,7 @@ String.prototype.trunc = function (
 
 declare global {
   const prisma: PrismaClient;
+  const redis: Redis;
 
   interface String {
     toCodeBlock(lang: string): string;
@@ -35,6 +37,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       DATABASE_URL: string;
+      REDIS_URL: string;
       TOKEN: string;
       OWNERS: string;
       DEBUG: string;
