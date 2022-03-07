@@ -45,6 +45,7 @@ declare global {
       CLOSE_CATEGORY: string;
       SUPPORT_ROLE: string;
       BOOST_CHANNEL_ID: string;
+      WELCOME_CHANNEL_ID: string;
     }
   }
 }
