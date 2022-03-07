@@ -11,6 +11,7 @@ import type { Sticky } from "@prisma/client";
 
 import "./extensions/user";
 import "./extensions/message";
+import "./extensions/guild";
 
 export class Deck extends AkairoClient {
   readonly logger = new Logger("Deck");

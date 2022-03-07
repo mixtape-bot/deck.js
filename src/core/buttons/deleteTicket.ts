@@ -7,6 +7,11 @@ export default class DeleteTicket extends Button {
   async exec(interaction: ButtonInteraction) {
     await interaction.deferReply();
 
+    // return if there's no guild
+    if (!interaction.guild) {
+      return interaction.editReply("Sorry, I can only be ran in a guild!");
+    }
+
     // check if the user has manage channel perms
     if (!interaction.memberPermissions?.has("MANAGE_CHANNELS"))
       return interaction.editReply(

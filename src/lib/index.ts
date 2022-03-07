@@ -41,11 +41,6 @@ declare global {
       TOKEN: string;
       OWNERS: string;
       DEBUG: string;
-      OPEN_CATEGORY: string;
-      CLOSE_CATEGORY: string;
-      SUPPORT_ROLE: string;
-      BOOST_CHANNEL_ID: string;
-      WELCOME_CHANNEL_ID: string;
     }
   }
 }

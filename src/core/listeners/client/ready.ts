@@ -15,6 +15,11 @@ export default class Ready extends Listener {
       this.client.sticky
     );
 
+    // TODO: use to add all current guilds to db, then remove
+    // for (const guild of this.client.guilds.cache.values()) {
+    //   await guild.upsert();
+    // }
+
     this.logger.info(
       `${tag} is now online with ${commands} commands and ${events} events`
     );

@@ -6,6 +6,11 @@ export default class CloseTicket extends Button {
   async exec(interaction: ButtonInteraction) {
     await interaction.deferReply();
 
+    // return if there's no guild
+    if (!interaction.guild) {
+      return interaction.editReply("Sorry, I can only be ran in a guild!");
+    }
+
     // match the ticket id with the channel name
     const id = getTicketId((<BaseGuildTextChannel>interaction.channel).name);
     if (!id)
@@ -25,9 +30,14 @@ export default class CloseTicket extends Button {
       where: { id: ticket.id },
       data: { closed: true },
     });
+
+    // get or create the guild in the db
+    const db = await interaction.guild.upsert();
+
+    // edit the channel
     await (<BaseGuildTextChannel>interaction.channel).edit({
       name: `closed-${padTicketId(ticket.id)}`,
-      parent: process.env.CLOSE_CATEGORY,
+      parent: db.closeCategory,
       lockPermissions: true,
     });
 
