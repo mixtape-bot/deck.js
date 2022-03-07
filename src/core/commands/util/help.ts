@@ -29,7 +29,7 @@ export default class Help extends Command {
           "Hello, I'm Deck! A utility bot made for the Mixtape Community."
         )
         .setThumbnail(this.client.user!.pfp)
-        .setFooter(`Deck™ — Total Commands: ${commands.size}`);
+        .setFooter({ text: `Deck™ — Total Commands: ${commands.size}` });
 
       categories.filter(categoryPredicate(message.author)).map((a, b) => {
         embed.addField(
