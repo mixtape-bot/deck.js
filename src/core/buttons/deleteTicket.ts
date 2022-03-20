@@ -1,12 +1,16 @@
 import { Button, button, getTicketId } from "@lib";
 import type { BaseGuildTextChannel, ButtonInteraction } from "discord.js";
-
-const wait = (ms: number) => new Promise((res) => setTimeout(res, ms));
+import { setTimeout } from "timers/promises";
 
 @button("delete-ticket")
 export default class DeleteTicket extends Button {
   async exec(interaction: ButtonInteraction) {
     await interaction.deferReply();
+
+    // return if there's no guild
+    if (!interaction.guild) {
+      return interaction.editReply("Sorry, I can only be ran in a guild!");
+    }
 
     // check if the user has manage channel perms
     if (!interaction.memberPermissions?.has("MANAGE_CHANNELS"))
@@ -30,7 +34,7 @@ export default class DeleteTicket extends Button {
 
     // reply to the user and wait 5 seconds
     await interaction.editReply("The ticket will be deleted in 5 seconds.");
-    await wait(5000);
+    await setTimeout(5000);
 
     // delete the channel then delete the record from the database
     await interaction.channel!.delete();

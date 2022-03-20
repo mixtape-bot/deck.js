@@ -22,8 +22,26 @@ model Tickets {
   id        Int      @id @default(autoincrement())
   userId    String
   channelId String   @default("")
+  guildId   String
+  guild     Guilds   @relation(fields: [guildId], references: [id], onDelete: Cascade)
   closed    Boolean  @default(false)
   createdAt DateTime @default(now())
 
   @@map("tickets")
+}
+
+model Guilds {
+  id       String    @id
+  tickets  Tickets[]
+  autorole String[]
+
+  openCategory  String? @map("open_category")
+  closeCategory String? @map("close_category")
+  supportRole   String? @map("support_role")
+  startMessage  String  @default("{{user.mention}}") @map("start_message")
+
+  boostChannel   String? @map("boost_channel")
+  welcomeChannel String? @map("welcome_channel")
+
+  @@map("guilds")
 }

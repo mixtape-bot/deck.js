@@ -5,11 +5,16 @@ import type { GuildMember } from "discord.js";
   event: "guildMemberAdd",
 })
 export default class AddMember extends Listener {
-  exec(member: GuildMember) {
-    // currently a basic autorole system
-    // will end up involving the db for adding/removing roles via cmds
-    return member.roles.add([
-      "810327056252010536", // member
-    ]);
+  async exec(member: GuildMember) {
+    const data = await member.guild.upsert();
+
+    if (data.autorole.length) {
+      await member.roles.add(data.autorole, "Autorole");
+    }
+
+    const channel = member.guild.channels.cache.get(data.welcomeChannel ?? "");
+    if (channel?.isText()) {
+      await channel.send(`Welcome to the server, ${member}!`);
+    }
   }
 }

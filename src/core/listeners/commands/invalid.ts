@@ -1,5 +1,5 @@
 import { Embed, Listener, listener } from "@lib";
-import type { Message, TextBasedChannel } from "discord.js";
+import type { Message } from "discord.js";
 
 @listener("invalid", {
   emitter: "commands",
@@ -20,7 +20,7 @@ export default class MessageInvalid extends Listener {
       });
     }
 
-    if (message.system) {
+    if (message.system && message.guild) {
       const tiers: Record<string, number | undefined> = {
         USER_PREMIUM_GUILD_SUBSCRIPTION: 0,
         USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1: 1,
@@ -30,7 +30,7 @@ export default class MessageInvalid extends Listener {
 
       const tier = tiers[message.type];
       if (typeof tier !== "number") return; // not a boost system message
-      this.logger.info(`${message.author.tag} boosted the server`);
+      this.logger.info(`${message.author.tag} boosted ${message.guild.name}`);
 
       //create  embed description
       const str = [
@@ -39,19 +39,21 @@ export default class MessageInvalid extends Listener {
         tier ? `, reaching us to tier ${tier}` : "",
       ].join("");
 
-      // increment the total boosts
-      await redis.incrby(
-        `boosts:${message.author.id}`,
-        +(message.content || "1")
-      );
+      // limit to mixtape guild
+      if (message.guildId === "751571246189379610") {
+        // increment the total boosts
+        await redis.incrby(
+          `boosts:${message.author.id}`,
+          +(message.content || "1")
+        );
+      }
 
       // if there is a boost channel, send the embed
-      const channel = await message.guild?.channels
-        .fetch(process.env.BOOST_CHANNEL_ID)
-        .catch(() => null);
-      return (<TextBasedChannel | null>channel)?.send({
-        embeds: [new Embed().setDescription(str)],
-      });
+      const db = await message.guild.upsert();
+      const channel = message.guild.channels.cache.get(db.boostChannel ?? "");
+      if (channel?.isText()) {
+        await channel.send({ embeds: [new Embed().setDescription(str)] });
+      }
     }
   }
 }

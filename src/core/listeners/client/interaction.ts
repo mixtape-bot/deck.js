@@ -7,9 +7,16 @@ import type { Interaction } from "discord.js";
 export default class InteractionCreate extends Listener {
   async exec(interaction: Interaction) {
     if (interaction.isButton()) {
-      return this.client.buttons.modules
-        .get(interaction.customId)
-        ?.exec(interaction);
+      try {
+        return await this.client.buttons.modules
+          .get(interaction.customId)
+          ?.exec(interaction);
+      } catch (e) {
+        this.logger.error(e);
+        const func =
+          interaction.replied || interaction.deferred ? "editReply" : "reply";
+        return interaction[func](`Oops, an error occurred. **${e}**`);
+      }
     }
   }
 }
