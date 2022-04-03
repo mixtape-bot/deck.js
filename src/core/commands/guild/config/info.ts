@@ -29,6 +29,7 @@ export default class ConfigInfo extends Command {
           `Boost Channel: ${this.display(db.boostChannel, "channel")}`,
           `Welcome Channel: ${this.display(db.welcomeChannel, "channel")}`,
         ])
+        .setFooter({ text: "This command is currently WIP!" })
     );
   }
 
