@@ -1,9 +1,6 @@
 name: Publish to registry
 
-on:
-  workflow_dispatch:
-  release:
-    types: [created]
+on: [workflow_dispatch, release]
 
 jobs:
   publish:
