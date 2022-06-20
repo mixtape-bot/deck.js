@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@dimensional-fun/logger": "^1.0.1",
-    "@kingsworld/akairo": "^8.1.2",
+    "@kingsworld/akairo": "^8.1.3",
     "@prisma/client": "^3.13.0",
     "discord.js": "^13.8.0",
     "dotenv": "^16.0.1",
